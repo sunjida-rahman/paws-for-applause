@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adopt a Pet - Paws for Applause</title>
+    <style>
+      /* General Styles */
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #fdf8f6;
+        color: #333;
+      }
+
+      header {
+        background-color: #ff6f61;
+        color: white;
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 1.8rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.2rem;
+      }
+
+      nav {
+        background-color: #fff;
+        padding: 1rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-menu {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar-item {
+        text-decoration: none;
+        color: #ff6f61;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        font-size: 1.2rem;
+        border: 2px solid #ff6f61;
+        border-radius: 5px;
+      }
+
+      .navbar-item:hover {
+        background-color: #ff6f61;
+        color: white;
+      }
+
+      /* Flexbox container for images and form */
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Vertically center items */
+        padding: 2rem;
+        gap: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-section {
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+        padding: 2rem;
+        width: 45%;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        z-index: 1; /* Make sure the form stays on top */
+      }
+
+      .form-section h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: #ff6f61;
+      }
+
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #555;
+      }
+
+      input,
+      textarea,
+      button {
+        width: calc(100% - 2rem);
+        margin: 0 1rem;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      button {
+        background-color: #ff6f61;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 1rem;
+      }
+
+      button:hover {
+        background-color: #e55b4f;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem 0;
+        background-color: #ff6f61;
+        color: white;
+        font-size: 1rem;
+      }
+
+      /* Background Image Section */
+      .background-left,
+      .background-right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        z-index: 0; /* Position behind the form */
+        background-size: cover;
+        background-position: center;
+        animation: moveBackground 10s linear infinite;
+      }
+
+      .background-left {
+        left: 0;
+        background-image: url('https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/01/shutterstock_587562362.jpg');
+      }
+
+      .background-right {
+        right: 0;
+        background-image: url('https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/01/shutterstock_587562362.jpg');
+        animation-direction: reverse; /* Move in the opposite direction */
+      }
+
+      @keyframes moveBackground {
+        0% {
+          background-position: left;
+        }
+        100% {
+          background-position: right;
+        }
+      }
+
+      .notification {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffefd5;
+        border: 2px solid #ff6f61;
+        padding: 1.5rem;
+        border-radius: 10px;
+        display: none;
+        text-align: center;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        display: block;
+      }
+
+      .notification h3 {
+        margin: 0 0 0.5rem;
+        color: #ff6f61;
+      }
+
+      .notification p {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      /* Add Paw Emoji Decorations */
+      header h1::before,
+      header h1::after,
+      .form-section h2::before,
+      .form-section h2::after {
+        content: "🐾";
+        margin: 0 0.5rem;
+      }
+
+      button::before {
+        content: "🐾";
+        margin-right: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Adopt a Pet</h1>
+    </header>
+
+    <nav>
+      <ul class="navbar-menu">
+        <li><a href="index.html" class="navbar-item">Home</a></li>
+        <li>
+          <a href="login.html" class="navbar-item" id="loginLink">Login</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <!-- Background Image Left -->
+      <div class="background-left"></div>
+
+      <!-- Form Section -->
+      <section class="form-section">
+        <h2>Adopt a Pet Form</h2>
+        <form id="adoptionForm" onsubmit="submitAdoptionForm(event)">
+          <label for="adopterName">Your Name:</label>
+          <input
+            type="text"
+            id="adopterName"
+            name="adopterName"
+            placeholder="Enter your name"
+            required
+          />
+
+          <label for="adopterPhone">Your Phone Number:</label>
+          <input
+            type="text"
+            id="adopterPhone"
+            name="adopterPhone"
+            placeholder="Enter your phone number"
+            required
+          />
+
+          <label for="adopterEmail">Your Email:</label>
+          <input
+            type="email"
+            id="adopterEmail"
+            name="adopterEmail"
+            placeholder="Enter your email address"
+            required
+          />
+
+          <label for="adopterAddress">Address:</label>
+          <textarea
+            id="adopterAddress"
+            name="adopterAddress"
+            rows="4"
+            placeholder="Enter your address"
+            required
+          ></textarea>
+
+          <label for="petID">Pet ID:</label>
+          <input
+            type="text"
+            id="petID"
+            name="petID"
+            placeholder="Enter the pet ID"
+            required
+          />
+          <!-- Hidden input field for user_id -->
+          <input type="hidden" id="user_id" name="user_id" value="" />
+          <button type="submit">🐾 Submit</button>
+        </form>
+      </section>
+
+      <!-- Background Image Right -->
+      <div class="background-right"></div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Paws for Applause 🐾</p>
+    </footer>
+
+    <div class="notification" id="notification">
+      <h3>Thank You for Adopting! 🐾</h3>
+      <p>
+        "Saving one animal won't change the world, but it will change the world
+        for that one animal."
+      </p>
+    </div>
+
+    <script>
+      window.onload = function () {
+        // Check login status
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const loginLink = document.getElementById("loginLink");
+        const userId = localStorage.getItem("userId");
+        const userIdField = document.getElementById("user_id");
+        if (userId) {
+          userIdField.value = userId; // Set user_id in the hidden field
+        }
+
+        if (!isLoggedIn) {
+          alert("Please log in to proceed.");
+          window.location.href = "login.html";
+        } else {
+          // Get user_id from localStorage
+          const userId = localStorage.getItem("userId");
+          if (userId) {
+            userIdField.value = userId; // Set user_id in the hidden field
+          }
+
+          loginLink.textContent = "Logout";
+          loginLink.href = "#";
+          loginLink.addEventListener("click", logout);
+        }
+      };
+
+      function logout(event) {
+        event.preventDefault();
+        localStorage.setItem("isLoggedIn", "false");
+        localStorage.removeItem("userId"); // Clear user_id from localStorage
+        window.location.href = "login.html";
+      }
+
+      function submitAdoptionForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("adoptionForm");
+        const formData = new FormData(form);
+
+        fetch("http://localhost:5000/api/adopt-pet", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.message) {
+              const notification = document.getElementById("notification");
+              notification.classList.add("show");
+
+              setTimeout(() => {
+                notification.classList.remove("show");
+                window.location.href = "index.html";
+              }, 5000);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Failed to submit the adoption form. Please try again.");
+          });
+      }
+    </script>
+  </body>
+</html>

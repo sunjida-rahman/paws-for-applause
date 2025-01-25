@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paws for Applause</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: rgb(33, 31, 5);
+            background-size: cover;
+            animation: slideshow 15s infinite;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Slideshow Animation */
+        @keyframes slideshow {
+            0% { background: url('https://media1.tenor.com/images/bc952df39ba359f861e55669cbc4053a/tenor.gif?itemid=16362248') no-repeat center center fixed; }
+            33% { background: url('https://www.vblawgroup.com/wp-content/uploads/2017/08/shutterstock_319985324.jpg') no-repeat center center fixed; }
+            66% { background: url('https://assets-global.website-files.com/5f6cc9cd16d59d990c8fca33/64887792791e7a7860e2fcd9_animal-rights-quotes-famous-5.jpg') no-repeat center center fixed; }
+            100% { background: url('https://images0.persgroep.net/rcs/G-fcB7ooyYyB9dvn6s3BUG5u_y0/diocontent/203242935/_fitwidth/694/?appId=21791a8992982cd8da851550a453bd7f&quality=0.8') no-repeat center center fixed; }
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.6); /* Transparent overlay */
+            color: white;
+            padding-block: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-block-start: 10px;
+            margin-block-end: 0;
+        }
+
+        .navbar {
+            background-color: rgba(51, 51, 51, 0.8); /* Semi-transparent navbar */
+            color: white;
+            padding-block: 10px;
+            padding-inline: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            inset-block-start: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-item {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .navbar-item:hover {
+            color: #ff9a9e;
+        }
+
+        .content-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding-inline: 20px;
+            margin-block-start: 200px;
+        }
+
+        .card {
+            background-color: white;
+            border: 2px solid black;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+            inline-size: 300px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .card h3 a {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #171817;
+            transition: color 0.3s;
+        }
+
+        .card h3 a:hover {
+            color: #ff9a9e;
+        }
+
+        .card p {
+            padding-inline: 15px;
+            font-size: 1rem;
+            color: #666;
+            margin-block-end: 20px;
+        }
+
+        footer {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: white;
+            text-align: center;
+            padding-block: 20px;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #ff9a9e;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .navbar .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: rgba(51, 51, 51, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 9999;
+        }
+    
+        .navbar .dropdown-menu li {
+            margin: 0;
+        }
+    
+        .navbar .dropdown-menu li a {
+            color: white;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+    
+        .navbar .dropdown-menu li a:hover {
+            background-color: #ff9a9e;
+        }
+    
+        .navbar .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Paws for Applause 🐶🐈</h1>
+        <p>Making a difference for stray animals, one paw at a time!</p>
+    </header>
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            <li id="userDropdown" class="navbar-item">user</li>
+            <li><a href="login.html" class="navbar-item" id="loginLogoutBtn">Login</a></li>
+            <li class="dropdown">
+                <a href="#" class="navbar-item">Settings</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Privacy Settings</a></li>
+                    <li><a href="#">Notifications</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#" class="navbar-item">Guidance</a>
+                <ul class="dropdown-menu">
+                    <li><a href="vaccination-tips.html">Vaccination Tips</a></li>
+                    <li><a href="care-guide.html">How to Take Care of Your Pet</a></li>
+                    <li><a href="disease-awareness.html">Common Diseases and Prevention</a></li>
+                    <li><a href="safety-tips.html">Safety Tips & Awareness</a></li>
+                </ul>
+            </li>    
+            <li><a href="animal_store.html" class="navbar-item">Animal store</a></li>
+        </ul>
+    </nav>
+    <section class="content-section">
+        <!-- Content section cards -->
+        <div class="card">
+            <img src="https://static.vecteezy.com/system/resources/previews/016/461/442/non_2x/cute-dog-puppy-face-pet-animal-character-with-in-animated-cartoon-illustration-vector.jpg" alt="Adopt a Pet">
+            <h3><a href="adoptionprocess.html">Adopt a Pet</a></h3>
+            <p>Help give stray animals a loving home. Adoption is just a click away!</p>
+        </div>
+        <div class="card">
+            <img src="https://static.vecteezy.com/system/resources/previews/000/544/700/original/vector-cute-friendly-cartoon-dog.jpg" alt="Support Our Shelter">
+            <h3><a href="donationprocess.html">Support Our Shelter</a></h3>
+            <p>Your donations help improve shelter facilities for animals in need.</p>
+        </div>
+        <div class="card">
+            <img src="https://static.vecteezy.com/system/resources/previews/000/544/700/original/vector-cute-friendly-cartoon-dog.jpg" alt="Report Strays">
+            <h3><a href="report-strays.html" class="navbar-item">Report Strays</a></h3>
+            <p>Notify us about injured or stray animals so we can help them immediately.</p>
+        </div>
+
+    </section>
+    <footer>
+        <p>&copy; 2025 Paws for Applause | <a href="about-us.html">About Us</a> | <a href="contact-us.html">Contact Us</a></p>
+        <p><strong>Got an Awww for Paw?</strong> Help make a difference today!</p>
+    </footer>
+    
+    <script>
+        // Check login status and user ID on page load
+        window.onload = function () {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userId = localStorage.getItem('userId');
+            const loginLogoutBtn = document.getElementById('loginLogoutBtn');
+            const userDropdown = document.getElementById('userDropdown');
+
+            if (isLoggedIn && userId) {
+                loginLogoutBtn.textContent = 'Logout';
+                loginLogoutBtn.href = '#';
+                loginLogoutBtn.addEventListener('click', logout);
+                userDropdown.textContent = `User ID: ${userId}`;
+            } else {
+                loginLogoutBtn.textContent = 'Login';
+                loginLogoutBtn.href = 'login.html';
+                userDropdown.textContent = 'User';
+            }
+        };
+
+        // Logout function
+        function logout(event) {
+            event.preventDefault();
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('userId');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

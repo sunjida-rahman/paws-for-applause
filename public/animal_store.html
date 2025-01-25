@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Store</title>
+  <style>
+    /* Basic page styling */
+    body {
+      font-family: 'Georgia', serif;  /* Elegant font */
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;  /* Subtle light grey background */
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      background-color: #576857;  /* Soft green background */
+      color: white;
+      padding: 30px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;  /* Larger header */
+      font-family: 'Georgia', serif;
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin: 10px 0;
+      font-weight: 300;
+    }
+
+    #animal-store {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .animal-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      margin: 15px;
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+      transition: transform 0.2s;
+      font-family: 'Georgia', serif; /* Elegant font for cards */
+    }
+
+    .animal-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .animal-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .animal-card h3 {
+      font-size: 1.5em;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    .animal-card p {
+      font-size: 1.1em;
+      margin: 8px 0;
+      color: #555;  /* Darker grey for text */
+    }
+
+    footer {
+      background-color: #333;  /* Dark footer for contrast */
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: relative;
+      width: 100%;
+      bottom: 0;
+      font-size: 1.1em;
+      font-weight: 300;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Our Animal Store</h1>
+    <p>Rescued animals are waiting for their forever homes</p>
+  </header>
+
+  <section id="animal-store">
+    <!-- Animal cards will be dynamically inserted here -->
+  </section>
+
+  <footer>
+    <p>Thank you for supporting our cause! <br><a href="#">Learn More</a></p>
+  </footer>
+
+  <script>
+    // Fetch animals from backend and display them
+    fetch("http://localhost:5000/api/get-animals")
+      .then(response => response.json())
+      .then(data => {
+        const animalStoreSection = document.getElementById("animal-store");
+
+        if (data && Array.isArray(data) && data.length > 0) {
+          data.forEach(animal => {
+            const animalCard = document.createElement("div");
+            animalCard.classList.add("animal-card");
+
+            const petImage = animal.pet_image
+              ? `<img src="http://localhost:5000/uploads/${animal.pet_image}" alt="${animal.breed}">`
+              : "<img src='default.jpg' alt='No image available'>";
+
+            animalCard.innerHTML = `
+              ${petImage}
+              <h3>Breed: ${animal.breed}</h3>
+              <p>Health Condition: ${animal.health_condition}</p>
+              <p>Available for Adoption: ${animal.is_available_for_adoption ? 'Yes' : 'No'}</p>
+            `;
+
+            animalStoreSection.appendChild(animalCard);
+          });
+        } else {
+          animalStoreSection.innerHTML = "<p>No animals available for adoption at the moment.</p>";
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching animals:", error);
+        alert("Could not load animal data.");
+      });
+  </script>
+</body>
+</html>

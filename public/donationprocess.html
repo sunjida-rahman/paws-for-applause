@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donate - Paws for Applause</title>
+    <style>
+      /* General Styles */
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7fdf6;
+        color: #333;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .left-side,
+      .right-side {
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        flex: 1;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .left-side {
+        background-image: url("https://images.unsplash.com/photo-1560807707-8cc77767d783");
+      }
+
+      .right-side {
+        background-image: url("https://images.unsplash.com/photo-1568037652202-17dbde0bd6ae");
+      }
+
+      .container:hover .left-side {
+        transform: scale(1.05);
+      }
+
+      .container:hover .right-side {
+        transform: scale(1.05);
+      }
+
+      @keyframes moveLeftSide {
+        0% {
+          transform: translateX(0);
+        }
+
+        50% {
+          transform: translateX(10px);
+        }
+
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes moveRightSide {
+        0% {
+          transform: translateX(0);
+        }
+
+        50% {
+          transform: translateX(-10px);
+        }
+
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .left-side {
+        animation: moveLeftSide 5s infinite alternate;
+      }
+
+      .right-side {
+        animation: moveRightSide 5s infinite alternate;
+      }
+
+      .form-section {
+        background-color: #fff;
+        margin: 2rem;
+        padding: 2rem;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      header {
+        background-color: #64c899;
+        color: white;
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 1.8rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.2rem;
+      }
+
+      nav {
+        background-color: #fff;
+        padding: 1rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-menu {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar-item {
+        text-decoration: none;
+        color: #64c899;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        font-size: 1.2rem;
+        border: 2px solid #64c899;
+        border-radius: 5px;
+      }
+
+      .navbar-item:hover {
+        background-color: #64c899;
+        color: white;
+      }
+
+      .form-section h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: #64c899;
+      }
+
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #555;
+      }
+
+      input,
+      textarea,
+      select,
+      button {
+        width: calc(100% - 2rem);
+        margin: 0 1rem;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      button {
+        background-color: #64c899;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 1rem;
+      }
+
+      button:hover {
+        background-color: #56a981;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem 0;
+        background-color: #64c899;
+        color: white;
+        font-size: 1rem;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #e9ffe6;
+        border: 2px solid #64c899;
+        padding: 1.5rem;
+        border-radius: 10px;
+        display: none;
+        text-align: center;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        display: block;
+      }
+
+      .notification h3 {
+        margin: 0 0 0.5rem;
+        color: #64c899;
+      }
+
+      .notification p {
+        margin: 0;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Make a Donation</h1>
+    </header>
+
+    <nav>
+      <ul class="navbar-menu">
+        <li><a href="index.html" class="navbar-item">Home</a></li>
+        <li>
+          <a href="login.html" class="navbar-item" id="loginLink">Login</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <div class="left-side"></div>
+      <section class="form-section">
+        <h2>Donation Form</h2>
+        <form id="donationForm" onsubmit="submitDonationForm(event)">
+          <label for="donorName">Your Name:</label>
+          <input
+            type="text"
+            id="donorName"
+            name="donorName"
+            placeholder="Enter your name"
+            required
+          />
+
+          <label for="donorEmail">Your Email:</label>
+          <input
+            type="email"
+            id="donorEmail"
+            name="donorEmail"
+            placeholder="Enter your email"
+            required
+          />
+
+          <label for="donorPhone">Your Phone:</label>
+          <input
+            type="text"
+            id="donorPhone"
+            name="donorPhone"
+            placeholder="Enter your phone number"
+            required
+          />
+
+          <label for="donationAmount">Amount (BDT):</label>
+          <input
+            type="number"
+            id="donationAmount"
+            name="donationAmount"
+            placeholder="Enter donation amount"
+            required
+          />
+
+          <label for="paymentMethod">Payment Method:</label>
+          <select id="paymentMethod" name="paymentMethod" required>
+            <option value="" disabled selected>Select a method</option>
+            <option value="bank">Bank Transfer</option>
+            <option value="cash">Cash</option>
+          </select>
+
+          <!-- Hidden fields for bank payment -->
+          <label
+            for="bankAccountNumber"
+            id="bankAccountNumberLabel"
+            style="display: none"
+            >Bank Account Number:</label
+          >
+          <input
+            type="text"
+            id="bankAccountNumber"
+            name="bankAccountNumber"
+            placeholder="Enter bank account number"
+            style="display: none"
+          />
+
+          <label
+            for="bankTransactionId"
+            id="bankTransactionIdLabel"
+            style="display: none"
+            >Bank Transaction ID:</label
+          >
+          <input
+            type="text"
+            id="bankTransactionId"
+            name="bankTransactionId"
+            placeholder="Enter bank transaction ID"
+            style="display: none"
+          />
+
+          <button type="submit">🐾 Donate</button>
+        </form>
+      </section>
+      <div class="right-side"></div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Paws for Applause 🐾</p>
+    </footer>
+
+    <div class="notification" id="notification">
+      <h3>Thank You for Donating! 🐾</h3>
+      <p>"Together, we can make a difference for animals in need."</p>
+    </div>
+
+    <script>
+      window.onload = function () {
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const loginLink = document.getElementById("loginLink");
+
+        if (!isLoggedIn) {
+          alert("Please log in to proceed.");
+          window.location.href = "login.html";
+        } else {
+          loginLink.textContent = "Logout";
+          loginLink.href = "#";
+          loginLink.addEventListener("click", logout);
+        }
+      };
+
+      function logout(event) {
+        event.preventDefault();
+        localStorage.setItem("isLoggedIn", "false");
+        window.location.href = "login.html";
+      }
+
+      // Function to toggle the bank payment fields visibility
+      function toggleBankFields() {
+        const paymentMethod = document.getElementById("paymentMethod").value;
+        const bankAccountNumberField =
+          document.getElementById("bankAccountNumber");
+        const bankTransactionIdField =
+          document.getElementById("bankTransactionId");
+        const bankAccountNumberLabel = document.getElementById(
+          "bankAccountNumberLabel"
+        );
+        const bankTransactionIdLabel = document.getElementById(
+          "bankTransactionIdLabel"
+        );
+
+        if (paymentMethod === "bank") {
+          // Show bank fields
+          bankAccountNumberField.style.display = "block";
+          bankTransactionIdField.style.display = "block";
+          bankAccountNumberLabel.style.display = "block";
+          bankTransactionIdLabel.style.display = "block";
+        } else {
+          // Hide bank fields
+          bankAccountNumberField.style.display = "none";
+          bankTransactionIdField.style.display = "none";
+          bankAccountNumberLabel.style.display = "none";
+          bankTransactionIdLabel.style.display = "none";
+        }
+      }
+
+      // Add an event listener to the payment method dropdown to toggle fields on change
+      document
+        .getElementById("paymentMethod")
+        .addEventListener("change", toggleBankFields);
+
+      // Call the function on load to initialize the visibility
+      toggleBankFields();
+
+      // Handle the donation form submission
+      // Function to handle the form submission
+      function submitDonationForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("donationForm");
+        const formData = new FormData(form);
+
+        const donationData = {
+          donorName: formData.get("donorName"),
+          donorEmail: formData.get("donorEmail"),
+          donorPhone: formData.get("donorPhone"),
+          donationAmount: formData.get("donationAmount"),
+          donationMode: formData.get("paymentMethod"),
+          bankAccountNumber: formData.get("bankAccountNumber"),
+          bankTransactionId: formData.get("bankTransactionId"),
+          donationDate: new Date().toISOString().split("T")[0],
+          user_id: localStorage.getItem("userId"), // Retrieve the user ID from localStorage
+        };
+
+        if (donationData.donationMode === "cash") {
+          donationData.bankAccountNumber = null;
+          donationData.bankTransactionId = null;
+        }
+
+        fetch("http://localhost:5000/api/donate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(donationData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const notification = document.getElementById("notification");
+            notification.style.display = "block";
+
+            setTimeout(() => {
+              notification.style.display = "none";
+              window.location.href = "index.html";
+            }, 5000);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Failed to submit donation form. Please try again.");
+          });
+      }
+    </script>
+  </body>
+</html>

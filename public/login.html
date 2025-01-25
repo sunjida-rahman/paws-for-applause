@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Paws for Applause</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #5f5c5c;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        width: 100%;
+        height: 500px; /* Set a height for the container */
+      }
+      .login-container {
+        text-align: center;
+        width: 300px;
+        margin-right: 20px;
+        background-color: rgba(255, 255, 255, 0.7); /* Light transparent background */
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .login-container h2 {
+        margin-bottom: 20px;
+      }
+      .login-container input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .login-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #474545;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .login-container button:hover {
+        background-color: #e12828;
+      }
+      .login-container .message {
+        margin-top: 15px;
+        font-size: 14px;
+        color: rgb(147, 26, 34);
+      }
+      .login-container .error-message {
+        color: red;
+      }
+
+      /* New background container */
+      .image-container {
+        position: relative;
+        flex-grow: 1;
+        height: 100%;
+        background-image: url('https://th.bing.com/th/id/OIP.4OkQqasSkT_ziPCUxlT5HgHaFI?rs=1&pid=ImgDetMain');
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        animation: move 10s infinite alternate;
+      }
+
+      @keyframes move {
+        0% {
+          transform: translateY(0%);
+        }
+        100% {
+          transform: translateY(-10%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-container">
+        <h2 id="formTitle">Login</h2>
+        <form id="loginForm">
+          <input
+            type="text"
+            id="userId"
+            placeholder="User ID"
+            name="userId"
+            required
+          />
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            required
+            name="username"
+          />
+          <input
+            type="text"
+            id="phone"
+            placeholder="Phone number"
+            required
+            name="phone"
+          />
+          <button type="submit" id="submitButton">Login</button>
+        </form>
+        <p class="message" id="message"></p>
+        <p class="error-message" id="errorMessage"></p>
+      </div>
+      <!-- Image will now be the background of this div -->
+      <div class="image-container"></div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById("loginForm");
+      const submitButton = document.getElementById("submitButton");
+      const messageElement = document.getElementById("message");
+      const errorMessageElement = document.getElementById("errorMessage");
+      const formTitle = document.getElementById("formTitle");
+
+      // Check if the user is already logged in
+      if (localStorage.getItem("isLoggedIn") === "true") {
+        console.log("hello");
+        setLoggedInState();
+      }
+
+      loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        console.log(localStorage.getItem("isLoggedIn"));
+        if (localStorage.getItem("isLoggedIn") === "true") {
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("username");
+          localStorage.removeItem("userId"); // Remove userId from localStorage
+          window.location.reload();
+          return;
+        }
+
+        const userId = document.getElementById("userId").value;
+        const username = document.getElementById("username").value;
+        const phone = document.getElementById("phone").value;
+
+        errorMessageElement.textContent = ""; // Clear previous error messages
+        messageElement.textContent = ""; // Clear previous success messages
+
+        const loginData = { userId, username, phone };
+
+        try {
+          const response = await fetch("http://localhost:5000/api/user/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            messageElement.textContent = data.message;
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("username", username);
+            localStorage.setItem("userId", data.userId); // Save the userId
+
+            setTimeout(() => {
+              window.location.href = "index.html"; // Redirect after 2 seconds
+            }, 2000);
+
+            setLoggedInState();
+          } else {
+            errorMessageElement.textContent =
+              data.error || "An error occurred. Please try again.";
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          errorMessageElement.textContent =
+            "An unexpected error occurred. Please try again.";
+        }
+      });
+
+      function setLoggedInState() {
+        formTitle.textContent = `Welcome, ${localStorage.getItem("username")}`;
+        submitButton.textContent = "Logout";
+        document.getElementById("userId").style.display = "none";
+        document.getElementById("username").style.display = "none";
+        document.getElementById("phone").style.display = "none";
+
+        loginForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("username");
+          localStorage.removeItem("userId"); // Remove userId from localStorage
+
+          window.location.reload();
+        });
+      }
+    </script>
+  </body>
+</html>
