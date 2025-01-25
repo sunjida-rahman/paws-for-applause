@@ -1,2 +1,0 @@
-"# paws" 
-"# paws-for-applause" 
